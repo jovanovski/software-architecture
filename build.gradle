@@ -37,11 +37,3 @@ repositories {
 dependencies {
 	testCompile 'junit:junit:4.12' 
 }
-
-uploadArchives {
-	repositories {
-		flatDir {
-			dirs 'bin'
-		}
-	}
-}
