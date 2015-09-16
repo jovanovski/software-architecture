@@ -31,7 +31,7 @@ sourceSets {
 	}
 }
 
-mainClassName = "nl.uva.sa.ft1.Main"
+mainClassName = "nl.uva.sa.ft1.PipeFilterDemo"
 
 repositories {
 	mavenCentral()
