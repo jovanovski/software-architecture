@@ -1,4 +1,4 @@
-# Software Architecture 2015-2016 - Group FT_1
+# Software Architecture 2015-2016 - Group FT_1 
 
 ## Build instructions
 
