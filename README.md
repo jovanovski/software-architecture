@@ -12,4 +12,4 @@ The system is developed in Eclipse using the buildship plugin to interface with 
 You need an internet connection to be able to download dependencies.
 
 ### Build/Test instructions
-To build the system run `gradle build`. The build the system and run all tests run `gradle test`.
+To build the system run `gradle build`. The build the system and run all tests run `gradle test`. To run the sample executable run `gradle run`
