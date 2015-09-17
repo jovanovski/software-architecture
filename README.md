@@ -1,4 +1,6 @@
-# Software Architecture 2015-2016 - Group FT_1 
+# Software Architecture 2015-2016 - Group FT_1
+ 
+[![Build Status](https://travis-ci.org/jovanovski/software-architecture.svg?branch=master)](https://travis-ci.org/jovanovski/software-architecture)
 
 ## Build instructions
 
