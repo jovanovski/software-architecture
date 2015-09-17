@@ -2,7 +2,7 @@ package nl.uva.sa.ft1.pipe;
 
 import java.util.*;
 
-public class SynchronizedArrayListPipe<E> implements Pipe<E>{
+public class SynchronizedArrayListPipe<E> implements AsynchronousPipe<E>{
 
     private List<E> buffer = new ArrayList<E>();
 
@@ -10,10 +10,21 @@ public class SynchronizedArrayListPipe<E> implements Pipe<E>{
         buffer.add(obj);
         notify();
     }
+    
+    public E get() throws OperationFailedException {
+    	return get(true);
+    }
 
-    public synchronized E get() throws OperationFailedException {
+    public synchronized E get(boolean blocking) throws OperationFailedException {
     	try {
-    		while(buffer.isEmpty()) wait();
+    		if (buffer.isEmpty()) {
+    			if (blocking) {
+    				while(buffer.isEmpty()) wait();	
+    			} else {
+    				return null;
+    			}    				
+    		} 
+    		
             E obj = buffer.remove(0);
             return obj;	
     	} catch (InterruptedException e) {
