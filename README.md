@@ -6,10 +6,10 @@
 Gradle is used to build all artifacts. It can be run manually from the command line or from inside an IDE.
 
 ### IDE
-The system is developed in Eclipse using the buildship plugin to interface with the Gradle build system. Any other IDE that can use gradle will probably work.
+The system is developed in Eclipse using the Buildship plugin to interface with the Gradle build system. Any other IDE that can use Gradle will probably work.
 
 ### Further installation instructions
-You need an internet connection to be able to download dependencies.
+You need an Internet connection to be able to download dependencies.
 
 ### Build/Test instructions
 To build the system run `gradle build`. The build the system and run all tests run `gradle test`. To run the sample executable run `gradle run`
