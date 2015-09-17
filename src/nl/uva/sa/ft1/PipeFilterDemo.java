@@ -8,15 +8,15 @@ import nl.uva.sa.ft1.filter.Filter;
 import nl.uva.sa.ft1.filter.LogingFilter;
 import nl.uva.sa.ft1.filter.VeboseCountFilter;
 import nl.uva.sa.ft1.pipe.Pipe;
-import nl.uva.sa.ft1.pipe.PipeImpl;
+import nl.uva.sa.ft1.pipe.SynchronizedArrayListPipe;
 
 public class PipeFilterDemo {
 
     public static void main(String[] args) {
     	//Create shared pipes
-    	Pipe<String> pipe1 = new PipeImpl<String>();
-    	Pipe<String> pipe2 = new PipeImpl<String>();
-    	Pipe<String> pipe3 = new PipeImpl<String>();
+    	Pipe<String> pipe1 = new SynchronizedArrayListPipe<String>();
+    	Pipe<String> pipe2 = new SynchronizedArrayListPipe<String>();
+    	Pipe<String> pipe3 = new SynchronizedArrayListPipe<String>();
 
     	List<Pipe<String>> logInPipes = new ArrayList<Pipe<String>>();
     	logInPipes.add(pipe1);

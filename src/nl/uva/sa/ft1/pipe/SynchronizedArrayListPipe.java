@@ -2,7 +2,7 @@ package nl.uva.sa.ft1.pipe;
 
 import java.util.*;
 
-public class PipeImpl<E> implements Pipe<E>{
+public class SynchronizedArrayListPipe<E> implements Pipe<E>{
 
     private List<E> buffer = new ArrayList<E>();
 
