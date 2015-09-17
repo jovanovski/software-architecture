@@ -13,21 +13,22 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
     }
     
     public synchronized E get(boolean blocking) throws OperationFailedException, PipeClosedException {
-		if (this.isClosed()) {
-			throw new PipeClosedException();
-		}
-		
     	try {    		
-    		if (buffer.isEmpty()) {
+    		if (this.isEmpty()) {
+    			if (this.isClosed()) {
+    				throw new PipeClosedException();
+    			}
+    			
     			if (blocking) {
-    				while(buffer.isEmpty() && !this.isClosed()) wait();
+    				while(this.isEmpty()) {
+    					wait();
+    					if (this.isClosed()) {
+    		    			throw new PipeClosedException();
+    		    		}
+    				}
     			} else {
     				return null;
     			}    				
-    		}
-    		
-    		if (this.isClosed()) {
-    			throw new PipeClosedException();
     		}
     		
             E obj = buffer.remove(0);
@@ -37,12 +38,16 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
     	}
     }
     
+    public boolean isEmpty() {
+    	return buffer.isEmpty();
+    }
+    
     public synchronized void close() {
     	this.closed = true;
     	this.notifyAll();
     }
     
     public boolean isClosed() {
-    	return buffer.isEmpty() && this.closed;
+    	return this.closed;
     }
 }
