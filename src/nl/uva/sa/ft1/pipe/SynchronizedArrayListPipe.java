@@ -2,7 +2,7 @@ package nl.uva.sa.ft1.pipe;
 
 import java.util.*;
 
-public class SynchronizedArrayListPipe<E> implements Pipe<E>{
+public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
 
     private List<E> buffer = new ArrayList<E>();
     private boolean closed = false;
@@ -12,10 +12,6 @@ public class SynchronizedArrayListPipe<E> implements Pipe<E>{
         notify();
     }
     
-    public E get() throws OperationFailedException {
-    	return get(true);
-    }
-
     public synchronized E get(boolean blocking) throws OperationFailedException {
     	try {
     		if (buffer.isEmpty()) {
