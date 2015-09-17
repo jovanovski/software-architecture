@@ -2,6 +2,8 @@ package nl.uva.sa.ft1;
 
 import java.util.List;
 
+import nl.uva.sa.ft1.pipe.OperationFailedException;
+
 public class ExceptionFilter implements Filter<String, String>{
 	private Pipe<String> pipe = null;
 
@@ -16,7 +18,7 @@ public class ExceptionFilter implements Filter<String, String>{
 				else{
 					line = (String) o;
 				}
-			} catch (InterruptedException iex) { }
+			} catch (OperationFailedException iex) { }
 
 			if (line==null){
 				break;

@@ -2,6 +2,8 @@ package nl.uva.sa.ft1;
 
 import java.util.List;
 
+import nl.uva.sa.ft1.pipe.OperationFailedException;
+
 public class LogingFilter extends FilterBase<String, String> implements Filter<String, String>{
 
 	public void run() {
@@ -42,7 +44,7 @@ public class LogingFilter extends FilterBase<String, String> implements Filter<S
 					}	
 				}
 				
-			} catch (InterruptedException iex) { }
+			} catch (OperationFailedException iex) { }
 
 		}
 	}
