@@ -6,7 +6,7 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
 
     private List<E> buffer = new ArrayList<E>();
     private boolean closed = false;
-
+    
     public synchronized void put(E obj){
         buffer.add(obj);
         notify();
@@ -20,7 +20,7 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
     	try {    		
     		if (buffer.isEmpty()) {
     			if (blocking) {
-    				while(buffer.isEmpty()) wait();
+    				while(buffer.isEmpty() && !this.isClosed()) wait();
     			} else {
     				return null;
     			}    				
@@ -42,7 +42,7 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
     	this.notifyAll();
     }
     
-    public synchronized boolean isClosed() {
+    public boolean isClosed() {
     	return buffer.isEmpty() && this.closed;
     }
 }
