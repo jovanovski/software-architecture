@@ -1,6 +1,8 @@
 package nl.uva.sa.ft1;
 
-public interface Filter<E> extends Runnable {
-	public boolean setPipeIn(Pipe<E> pipe);
-	public boolean setPipeOut(Pipe<E> pipe);
+import java.util.List;
+
+public interface Filter<E, K> extends Runnable {
+	public boolean setPipesIn(List<Pipe<E>> pipes);
+	public boolean setPipesOut(List<Pipe<K>> pipes);
 }

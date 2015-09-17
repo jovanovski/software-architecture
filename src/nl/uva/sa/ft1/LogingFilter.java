@@ -1,42 +1,69 @@
 package nl.uva.sa.ft1;
 
-public class LogingFilter implements Filter<String>{
-	private Pipe<String> pipe = null;
-	private Pipe<String> pipe2 = null;
+import java.util.List;
+
+public class LogingFilter extends FilterBase<String, String> implements Filter<String, String>{
 
 	public void run() {
-		String line = null;
+		Integer nulledPipes = 0;
 		while(true) {
+
+			System.out.println(nulledPipes + "B");
 			try {
-				Object o = pipe.get();
-				if(o==null){
-					line = null;
+				if(nulledPipes==inPipes.size()){
+					for (Pipe<String> pipeOut : outPipes) {
+						pipeOut.put(null);
+					}
+
+					System.out.println("DONE");
+					break;
 				}
-				else{
-					line = (String) o;
+				
+				for (Pipe<String> pipe : inPipes) {
+
+					System.out.println("Taking from a pipe");
+					Object s = pipe.get();
+					System.out.println(s + " - this is what I've got");
+					if(s==null){
+
+						System.out.println("One pipe has been nulled");
+						nulledPipes++;
+						if(nulledPipes==inPipes.size()){
+							break;
+						}
+					}
+					else{
+						String str = (String) s;
+						
+						System.out.println(str);
+						//for (Pipe<String> pipeOut : outPipes) {
+							//pipeOut.put(s);
+						//}
+					}	
 				}
+				
 			} catch (InterruptedException iex) { }
 
-			if (line==null){
-				pipe2.put(null);
-				break;
-			}
-			else if (line.startsWith("log:")){
-				pipe2.put(new String(line));
-			}
 		}
 	}
 
-	@Override
-	public boolean setPipeIn(Pipe<String> pipe) {
-		this.pipe = pipe;
+	public boolean setPipesIn(List<Pipe<String>> pipes) {
+		inPipes = pipes;
+		return true;
+	}
+
+	public boolean setPipesOut(List<Pipe<String>> pipes) {
+		outPipes = pipes;
 		return true;
 	}
 
 	@Override
-	public boolean setPipeOut(Pipe<String> pipe) {
-		this.pipe2 = pipe;
-		return true;
+	protected boolean filter(String input) {
+		if(input.startsWith("log:")){
+			return true;
+		}
+		return false;
 	}
+
 
 }

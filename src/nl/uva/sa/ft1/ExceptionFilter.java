@@ -1,6 +1,8 @@
 package nl.uva.sa.ft1;
 
-public class ExceptionFilter implements Filter<String>{
+import java.util.List;
+
+public class ExceptionFilter implements Filter<String, String>{
 	private Pipe<String> pipe = null;
 
 	public void run() {
@@ -20,20 +22,32 @@ public class ExceptionFilter implements Filter<String>{
 				break;
 			}
 			else if (line.startsWith("log:exception")){
-				System.out.println(line);
+				System.out.println(line + " - end");
 			}
 		}
 	}
 
 
-	@Override
 	public boolean setPipeIn(Pipe<String> pipe) {
 		this.pipe = pipe;
 		return true;
 	}
 
-	@Override
 	public boolean setPipeOut(Pipe<String> pipe) {
+		return false;
+	}
+
+
+	@Override
+	public boolean setPipesIn(List<Pipe<String>> pipes) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean setPipesOut(List<Pipe<String>> pipes) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 }

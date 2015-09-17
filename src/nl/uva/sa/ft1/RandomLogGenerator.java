@@ -15,10 +15,12 @@ public class RandomLogGenerator extends Thread {
 		for (int i = 1; i<= 100; i++){
 			int rndNum = randomGenerator.nextInt(5);
 			String logLine = logs[rndNum];
+			//System.out.println(logLine + " - start");
 			pipe.put(logLine);
 		}
 		
 		//'null' signals that thats the end of the input
-		pipe.put(null);
+		String nul = null;
+		pipe.put(nul);
 	}
 }
