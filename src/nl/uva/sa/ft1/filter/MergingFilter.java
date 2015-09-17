@@ -1,5 +1,6 @@
 package nl.uva.sa.ft1.filter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nl.uva.sa.ft1.pipe.OperationFailedException;
@@ -17,6 +18,7 @@ public class MergingFilter<E> implements Filter {
 	
 	public void run() {
 		List<Pipe<E>> openPipes = pipesIn;
+		List<Pipe<E>> closedPipes = new ArrayList<>();
 		
 		try {
 			while (!openPipes.isEmpty()) {
@@ -27,10 +29,14 @@ public class MergingFilter<E> implements Filter {
 							pipeOut.put(obj);
 						}
 					} catch (PipeClosedException e) {
-						openPipes.remove(pipe);
+						closedPipes.add(pipe);
 					}
 				}
+				for (Pipe<E> pipe : closedPipes) {
+					openPipes.remove(pipe);
+				}
 			}
+			pipeOut.close();
 		} catch (OperationFailedException e) {
 			e.printStackTrace();
 		}
