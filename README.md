@@ -15,3 +15,18 @@ You need an Internet connection to be able to download dependencies.
 
 ### Build/Test instructions
 To build the system run `gradle build`. The build the system and run all tests run `gradle test`. To run the sample executable run `gradle run`
+
+## Library overview
+
+The main part of the framework is the Pipe interface. It's main implementation is SynchronizedArrayListPipe. The pipe is intended to facilitate the transfer of processed data between filtering components. It is thread-safe and offers an optionally non-blocking API for reading and writing data. In it's current state, the buffer size of a pipeline is not limited, but future versions could add a maximum capacity. In the current form, filters are completely free form components that use pipes for input and output. filters are expected to run in separate threads and therefore the Filter interface extends Runnable. Pipes can be closed to indicate no more data is coming. For now this is only intended to be done by the source, but future development might also allow pipe destinations to close the pipe and stop the source from generating data. Filters are expected to stop processing when it's input pipe (or multiple) is closed.   
+
+Some sample filters are provided for reference. Among the samples are filters that:
+
+- Filter strings to pass along the next pipe (LogingFilter).
+- Transform strings passed to it into a count of the number of strings (ExceptionCountfilter, VerboseCountFilter).
+- Branch one input pipe into several output pipes (BranchingFilter).
+- Merge several input pipes into one output pipe (MergingFilter).
+
+There is also a sample application containing a random log message generator that uses the sample filters to filter exception log messages and compute a count of verbose and exception log messages. 
+
+Test coverage is not complete, but tests exists for the SynchronizedArrayListPipe, BranchingFilter and MergingFilter.
