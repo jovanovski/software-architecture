@@ -23,13 +23,8 @@ public class RandomLogGenerator extends Thread {
 				//System.out.println(logLine + " - start");
 				pipe.put(logLine);
 			}
-			
-			//'null' signals that thats the end of the input
-			String nul = null;
-			pipe.put(nul);
-			
-			//'null' signals that thats the end of the input
-			pipe.put(null);	
+
+			pipe.close();
 		} catch (OperationFailedException e) {
 			System.out.println("Pipe operation failed");
 		}

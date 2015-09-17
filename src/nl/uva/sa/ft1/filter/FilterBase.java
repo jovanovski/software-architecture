@@ -1,12 +1,13 @@
 package nl.uva.sa.ft1.filter;
 
-import java.util.List;
-
 import nl.uva.sa.ft1.pipe.Pipe;
 
-public abstract class FilterBase<E, K> {
-	protected List<Pipe<E>> inPipes;
-	protected List<Pipe<K>> outPipes;
+public abstract class FilterBase<E, K> implements Filter {
+	protected Pipe<E> inPipe;
+	protected Pipe<K> outPipe;
 	
-	protected abstract boolean filter(E input);
+	public FilterBase(Pipe<E> inPipe, Pipe<K> outPipe) {
+		this.inPipe = inPipe;
+		this.outPipe = outPipe;
+	}
 }

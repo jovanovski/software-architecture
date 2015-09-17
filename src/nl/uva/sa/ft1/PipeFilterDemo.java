@@ -3,6 +3,7 @@ package nl.uva.sa.ft1;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.uva.sa.ft1.filter.BranchingFilter;
 import nl.uva.sa.ft1.filter.ExceptionCountFilter;
 import nl.uva.sa.ft1.filter.Filter;
 import nl.uva.sa.ft1.filter.LogingFilter;
@@ -14,44 +15,50 @@ public class PipeFilterDemo {
 
     public static void main(String[] args) {
     	//Create shared pipes
-    	Pipe<String> pipe1 = new SynchronizedArrayListPipe<String>();
-    	Pipe<String> pipe2 = new SynchronizedArrayListPipe<String>();
+    	Pipe<String> logInPipe = new SynchronizedArrayListPipe<String>();
+    	Pipe<String> logOutPipe = new SynchronizedArrayListPipe<String>();
     	Pipe<String> pipe3 = new SynchronizedArrayListPipe<String>();
 
     	List<Pipe<String>> logInPipes = new ArrayList<Pipe<String>>();
-    	logInPipes.add(pipe1);
+    	logInPipes.add(logInPipe);
 
     	List<Pipe<String>> logOutPipes = new ArrayList<Pipe<String>>();
-    	logOutPipes.add(pipe2);
+    	logOutPipes.add(logOutPipe);
     	logOutPipes.add(pipe3);
 
     	List<Pipe<String>> extInPipes = new ArrayList<Pipe<String>>();
-    	extInPipes.add(pipe2);
+    	extInPipes.add(logOutPipe);
     	
     	List<Pipe<String>> verInPipes = new ArrayList<Pipe<String>>();
     	verInPipes.add(pipe3);
     	
     	//Create generator and pass pipe 1 to it
-    	Thread logGenerator = new RandomLogGenerator(pipe1);
+    	Thread logGenerator = new RandomLogGenerator(logInPipe);
 
     	//Create log filter and set output pipes
-    	Filter<String, String> logingFilter = new LogingFilter();
-    	logingFilter.setPipesIn(logInPipes);
-    	logingFilter.setPipesOut(logOutPipes);
+    	LogingFilter logingFilter = new LogingFilter(logInPipe, logOutPipe);
+    	
+    	Pipe<String> logBranchOutPipe1 = new SynchronizedArrayListPipe<>();
+    	Pipe<String> logBranchOutPipe2 = new SynchronizedArrayListPipe<>();
+    	ArrayList<Pipe<String>> logBranchOutPipes = new ArrayList<>();
+    	logBranchOutPipes.add(logBranchOutPipe1);
+    	logBranchOutPipes.add(logBranchOutPipe2);
+    	
+    	BranchingFilter<String> branchingFilter = new BranchingFilter<>(logOutPipe, logBranchOutPipes);
 
-    	//Create exception filter and set input pipes
-    	Filter<String, Integer> exceptionFilter = new ExceptionCountFilter();
-    	exceptionFilter.setPipesIn(extInPipes);
-    	//Create verbose filter and set input pipes
-    	Filter<String, Integer> verboseFilter = new VeboseCountFilter();
-    	verboseFilter.setPipesIn(verInPipes);
+    	//Create exception filter 
+		ExceptionCountFilter exceptionFilter = new ExceptionCountFilter(logBranchOutPipe1, null);
+    	//Create verbose filter 
+    	VeboseCountFilter verboseFilter = new VeboseCountFilter(logBranchOutPipe2, null);
 
     	//Create threads of the filters, and run them
     	Thread logFilter = new Thread(logingFilter);
+    	Thread brFilter = new Thread(branchingFilter);
     	Thread expFilter = new Thread(exceptionFilter);
     	Thread vebFilter = new Thread(verboseFilter);
     	
     	logGenerator.start();
+    	brFilter.start();
     	logFilter.start();
     	expFilter.start();
     	vebFilter.start();

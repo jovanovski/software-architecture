@@ -1,13 +1,15 @@
 package nl.uva.sa.ft1.filter;
 
-import java.util.List;
-
 import nl.uva.sa.ft1.pipe.OperationFailedException;
 import nl.uva.sa.ft1.pipe.Pipe;
 
-public class ExceptionFilter implements Filter<String, String>{
+public class ExceptionFilter extends FilterBase<String, String> {
 	private Pipe<String> pipe = null;
 
+	public ExceptionFilter(Pipe<String> inPipe, Pipe<String> outPipe) {
+		super(inPipe, outPipe);
+	}
+	
 	public void run() {
 		String line = null;
 		while(true) {
@@ -28,29 +30,5 @@ public class ExceptionFilter implements Filter<String, String>{
 				System.out.println(line + " - end");
 			}
 		}
-	}
-
-
-	public boolean setPipeIn(Pipe<String> pipe) {
-		this.pipe = pipe;
-		return true;
-	}
-
-	public boolean setPipeOut(Pipe<String> pipe) {
-		return false;
-	}
-
-
-	@Override
-	public boolean setPipesIn(List<Pipe<String>> pipes) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public boolean setPipesOut(List<Pipe<String>> pipes) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
