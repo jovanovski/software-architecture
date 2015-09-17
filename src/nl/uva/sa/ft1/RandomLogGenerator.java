@@ -26,7 +26,7 @@ public class RandomLogGenerator extends Thread {
 
 			pipe.close();
 		} catch (OperationFailedException e) {
-			System.out.println("Pipe operation failed");
+			e.printStackTrace();
 		}
 	}
 }
