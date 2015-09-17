@@ -5,6 +5,7 @@ import java.util.List;
 
 import nl.uva.sa.ft1.filter.BranchingFilter;
 import nl.uva.sa.ft1.filter.ExceptionCountFilter;
+import nl.uva.sa.ft1.filter.ExceptionFilter;
 import nl.uva.sa.ft1.filter.Filter;
 import nl.uva.sa.ft1.filter.LogingFilter;
 import nl.uva.sa.ft1.filter.VeboseCountFilter;
@@ -40,27 +41,32 @@ public class PipeFilterDemo {
     	
     	Pipe<String> logBranchOutPipe1 = new SynchronizedArrayListPipe<>();
     	Pipe<String> logBranchOutPipe2 = new SynchronizedArrayListPipe<>();
+    	Pipe<String> logBranchOutPipe3 = new SynchronizedArrayListPipe<>();
     	ArrayList<Pipe<String>> logBranchOutPipes = new ArrayList<>();
     	logBranchOutPipes.add(logBranchOutPipe1);
     	logBranchOutPipes.add(logBranchOutPipe2);
+    	logBranchOutPipes.add(logBranchOutPipe3);
     	
     	BranchingFilter<String> branchingFilter = new BranchingFilter<>(logOutPipe, logBranchOutPipes);
 
     	//Create exception filter 
-		ExceptionCountFilter exceptionFilter = new ExceptionCountFilter(logBranchOutPipe1, null);
+		ExceptionCountFilter exceptionCountFilter = new ExceptionCountFilter(logBranchOutPipe1, null);
     	//Create verbose filter 
     	VeboseCountFilter verboseFilter = new VeboseCountFilter(logBranchOutPipe2, null);
+    	ExceptionFilter exceptionFilter = new ExceptionFilter(logBranchOutPipe3, null);
 
     	//Create threads of the filters, and run them
     	Thread logFilter = new Thread(logingFilter);
     	Thread brFilter = new Thread(branchingFilter);
-    	Thread expFilter = new Thread(exceptionFilter);
+    	Thread exctFilter = new Thread(exceptionCountFilter);
     	Thread vebFilter = new Thread(verboseFilter);
+    	Thread exFilter = new Thread(exceptionFilter);
     	
     	logGenerator.start();
     	brFilter.start();
     	logFilter.start();
-    	expFilter.start();
+    	exctFilter.start();
     	vebFilter.start();
+    	exFilter.start();
      }
 }
