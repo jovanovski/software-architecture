@@ -6,12 +6,12 @@ public class PipeImpl<E> implements Pipe<E>{
 
     private List<E> buffer = new ArrayList<E>();
 
-    public void put(E obj){
+    public synchronized void put(E obj){
         buffer.add(obj);
         notify();
     }
 
-    public E get() throws OperationFailedException {
+    public synchronized E get() throws OperationFailedException {
     	try {
     		while(buffer.isEmpty()) wait();
             E obj = buffer.remove(0);
@@ -20,5 +20,4 @@ public class PipeImpl<E> implements Pipe<E>{
     		throw new OperationFailedException();
     	}        
     }
-
 }
