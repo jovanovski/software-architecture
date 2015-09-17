@@ -12,18 +12,17 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
         notify();
     }
     
-    public synchronized E get(boolean blocking) throws OperationFailedException {
+    public synchronized E get(boolean blocking) throws OperationFailedException, PipeClosedException {
     	try {
     		if (buffer.isEmpty()) {
+    			if (closed) {
+        			throw new PipeClosedException();
+        		}    			
     			if (blocking) {
     				while(buffer.isEmpty()) wait();	
     			} else {
     				return null;
     			}    				
-    		} 
-    		
-    		if (closed) {
-    			throw new PipeClosedException();
     		}
     		
             E obj = buffer.remove(0);
