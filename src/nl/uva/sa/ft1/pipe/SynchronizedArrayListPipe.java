@@ -2,9 +2,10 @@ package nl.uva.sa.ft1.pipe;
 
 import java.util.*;
 
-public class SynchronizedArrayListPipe<E> implements AsynchronousPipe<E>{
+public class SynchronizedArrayListPipe<E> implements Pipe<E>{
 
     private List<E> buffer = new ArrayList<E>();
+    private boolean closed = false;
 
     public synchronized void put(E obj){
         buffer.add(obj);
@@ -25,10 +26,23 @@ public class SynchronizedArrayListPipe<E> implements AsynchronousPipe<E>{
     			}    				
     		} 
     		
+    		if (closed) {
+    			throw new PipeClosedException();
+    		}
+    		
             E obj = buffer.remove(0);
             return obj;	
     	} catch (InterruptedException e) {
     		throw new OperationFailedException();
     	}        
+    }
+    
+    public synchronized void close() {
+    	this.closed = true;
+    	this.notifyAll();
+    }
+    
+    public boolean isClosed() {
+    	return this.closed;
     }
 }
