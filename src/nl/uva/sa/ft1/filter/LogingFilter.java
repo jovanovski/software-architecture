@@ -1,17 +1,21 @@
-package nl.uva.sa.ft1;
+package nl.uva.sa.ft1.filter;
 
 import java.util.List;
 
 import nl.uva.sa.ft1.pipe.OperationFailedException;
+import nl.uva.sa.ft1.pipe.Pipe;
 
-public class VeboseCountFilter extends FilterBase<String, Integer> implements Filter<String, Integer>{
+public class LogingFilter extends FilterBase<String, String> implements Filter<String, String>{
+
 	public void run() {
 		Integer nulledPipes = 0;
-		Integer counter = 0;
 		while(true) {
+
 			try {
 				if(nulledPipes==inPipes.size()){
-					System.out.println("Counted verbose: " + counter);
+					for (Pipe<String> pipeOut : outPipes) {
+						pipeOut.put(null);
+					}
 					break;
 				}
 				
@@ -25,7 +29,9 @@ public class VeboseCountFilter extends FilterBase<String, Integer> implements Fi
 					}
 					else{			
 						if(filter(s)){
-							counter++;
+							for (Pipe<String> pipeOut : outPipes) {
+								pipeOut.put(s);
+							}
 						}
 					}	
 				}
@@ -40,16 +46,18 @@ public class VeboseCountFilter extends FilterBase<String, Integer> implements Fi
 		return true;
 	}
 
-	public boolean setPipesOut(List<Pipe<Integer>> pipes) {
+	public boolean setPipesOut(List<Pipe<String>> pipes) {
 		outPipes = pipes;
 		return true;
 	}
 
 	@Override
 	protected boolean filter(String input) {
-		if(input.startsWith("log:verbose")){
+		if(input.startsWith("log:")){
 			return true;
 		}
 		return false;
 	}
+
+
 }

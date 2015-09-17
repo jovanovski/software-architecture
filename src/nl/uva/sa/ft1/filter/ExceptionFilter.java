@@ -1,8 +1,9 @@
-package nl.uva.sa.ft1;
+package nl.uva.sa.ft1.filter;
 
 import java.util.List;
 
 import nl.uva.sa.ft1.pipe.OperationFailedException;
+import nl.uva.sa.ft1.pipe.Pipe;
 
 public class ExceptionFilter implements Filter<String, String>{
 	private Pipe<String> pipe = null;

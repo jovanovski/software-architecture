@@ -3,6 +3,7 @@ package nl.uva.sa.ft1;
 import java.util.Random;
 
 import nl.uva.sa.ft1.pipe.OperationFailedException;
+import nl.uva.sa.ft1.pipe.Pipe;
 
 public class RandomLogGenerator extends Thread {
 	private Pipe<String> pipe = null;

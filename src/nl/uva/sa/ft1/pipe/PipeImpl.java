@@ -1,8 +1,6 @@
-package nl.uva.sa.ft1;
+package nl.uva.sa.ft1.pipe;
 
 import java.util.*;
-
-import nl.uva.sa.ft1.pipe.OperationFailedException;
 
 public class PipeImpl<E> implements Pipe<E>{
 

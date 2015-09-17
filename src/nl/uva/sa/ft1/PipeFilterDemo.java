@@ -3,6 +3,13 @@ package nl.uva.sa.ft1;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.uva.sa.ft1.filter.ExceptionCountFilter;
+import nl.uva.sa.ft1.filter.Filter;
+import nl.uva.sa.ft1.filter.LogingFilter;
+import nl.uva.sa.ft1.filter.VeboseCountFilter;
+import nl.uva.sa.ft1.pipe.Pipe;
+import nl.uva.sa.ft1.pipe.PipeImpl;
+
 public class PipeFilterDemo {
 
     public static void main(String[] args) {

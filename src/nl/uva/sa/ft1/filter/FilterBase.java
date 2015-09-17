@@ -1,6 +1,8 @@
-package nl.uva.sa.ft1;
+package nl.uva.sa.ft1.filter;
 
 import java.util.List;
+
+import nl.uva.sa.ft1.pipe.Pipe;
 
 public abstract class FilterBase<E, K> {
 	protected List<Pipe<E>> inPipes;
