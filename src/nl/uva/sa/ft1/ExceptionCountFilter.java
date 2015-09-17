@@ -4,17 +4,15 @@ import java.util.List;
 
 import nl.uva.sa.ft1.pipe.OperationFailedException;
 
-public class LogingFilter extends FilterBase<String, String> implements Filter<String, String>{
-
+public class ExceptionCountFilter extends FilterBase<String, Integer> implements Filter<String, Integer>{
 	public void run() {
 		Integer nulledPipes = 0;
+		Integer counter = 0;
 		while(true) {
 
 			try {
 				if(nulledPipes==inPipes.size()){
-					for (Pipe<String> pipeOut : outPipes) {
-						pipeOut.put(null);
-					}
+					System.out.println("Counted exceptions: " + counter);
 					break;
 				}
 				
@@ -28,9 +26,7 @@ public class LogingFilter extends FilterBase<String, String> implements Filter<S
 					}
 					else{			
 						if(filter(s)){
-							for (Pipe<String> pipeOut : outPipes) {
-								pipeOut.put(s);
-							}
+							counter++;
 						}
 					}	
 				}
@@ -45,18 +41,16 @@ public class LogingFilter extends FilterBase<String, String> implements Filter<S
 		return true;
 	}
 
-	public boolean setPipesOut(List<Pipe<String>> pipes) {
+	public boolean setPipesOut(List<Pipe<Integer>> pipes) {
 		outPipes = pipes;
 		return true;
 	}
 
 	@Override
 	protected boolean filter(String input) {
-		if(input.startsWith("log:")){
+		if(input.startsWith("log:exception")){
 			return true;
 		}
 		return false;
 	}
-
-
 }
