@@ -4,6 +4,7 @@ import java.util.Random;
 
 import nl.uva.sa.ft1.pipe.OperationFailedException;
 import nl.uva.sa.ft1.pipe.Pipe;
+import nl.uva.sa.ft1.pipe.PipeClosedException;
 
 public class RandomLogGenerator extends Thread {
 	private Pipe<String> pipe = null;
@@ -25,6 +26,8 @@ public class RandomLogGenerator extends Thread {
 			}
 
 			pipe.close();
+		} catch (PipeClosedException e) {
+			e.printStackTrace();
 		} catch (OperationFailedException e) {
 			e.printStackTrace();
 		}

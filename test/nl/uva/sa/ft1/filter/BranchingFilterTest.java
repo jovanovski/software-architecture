@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import nl.uva.sa.ft1.pipe.OperationFailedException;
 import nl.uva.sa.ft1.pipe.Pipe;
+import nl.uva.sa.ft1.pipe.PipeClosedException;
 import nl.uva.sa.ft1.pipe.SynchronizedArrayListPipe;
 
 import java.util.ArrayList;
@@ -19,12 +20,12 @@ public class BranchingFilterTest {
 		outPipes.add(outPipe1);
 		outPipes.add(outPipe2);
 		
-		inPipe.put("foo");
-		inPipe.put("bar");
-		inPipe.close();
-		BranchingFilter<String> filter = new BranchingFilter<>(inPipe, outPipes);
-		filter.run();
 		try {
+			inPipe.put("foo");
+			inPipe.put("bar");
+			inPipe.close();
+			BranchingFilter<String> filter = new BranchingFilter<>(inPipe, outPipes);
+			filter.run();
 			assertEquals("foo", outPipe1.get());
 			assertEquals("bar", outPipe1.get());
 			assertEquals("foo", outPipe2.get());
@@ -33,6 +34,9 @@ public class BranchingFilterTest {
 			assertTrue(outPipe2.isClosed());
 			assertTrue(outPipe2.isEmpty());
 			assertTrue(outPipe2.isClosed());
+		} catch (PipeClosedException e) {
+			e.printStackTrace();
+			fail("Pipe closed prematurely");
 		} catch (OperationFailedException e) {
 			e.printStackTrace();
 			fail("Operation failed");

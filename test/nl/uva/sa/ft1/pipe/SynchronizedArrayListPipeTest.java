@@ -8,14 +8,18 @@ public class SynchronizedArrayListPipeTest {
 	@Test
 	public void test() {
 		SynchronizedArrayListPipe<String> pipe = new SynchronizedArrayListPipe<>();
-		pipe.put("foo");
-		pipe.put("bar");
-		assertEquals(false, pipe.isClosed());
-		assertEquals(false, pipe.isEmpty());
 		try {
+			pipe.put("foo");
+			pipe.put("bar");
+			assertEquals(false, pipe.isClosed());
+			assertEquals(false, pipe.isEmpty());
 			assertEquals("foo", pipe.get());
 			assertEquals("bar", pipe.get());
+		} catch (PipeClosedException e) {
+			e.printStackTrace();
+			fail("Pipe closed prematurely");		
 		} catch (OperationFailedException e) {
+			e.printStackTrace();
 			fail("Pipe operation failed");
 		}
 

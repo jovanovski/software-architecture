@@ -7,7 +7,10 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
     private List<E> buffer = new ArrayList<E>();
     private boolean closed = false;
     
-    public synchronized void put(E obj){
+    public synchronized void put(E obj, boolean blocking) throws OperationFailedException, PipeClosedException {
+    	if (this.isClosed()) {
+    		throw new PipeClosedException();
+    	}
         buffer.add(obj);
         notify();
     }

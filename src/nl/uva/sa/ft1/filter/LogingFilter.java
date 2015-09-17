@@ -11,15 +11,17 @@ public class LogingFilter extends FilterBase<String, String> implements Filter {
 	
 	public void run() {
 		try {
-			while(true) {
-				String s = inPipe.get();
-				if(s.startsWith("log:")){
-					this.outPipe.put(s);
+			try {
+				while(true) {
+					String s = inPipe.get();
+					if(s.startsWith("log:")){
+						this.outPipe.put(s);
+					}
 				}
-			}
-		} catch (PipeClosedException e) {
-			outPipe.close();
-		} catch (OperationFailedException iex) {
+			} catch (PipeClosedException e) {
+				outPipe.close();
+			} 
+		}catch (OperationFailedException iex) {
 			iex.printStackTrace();
 		}
 	}

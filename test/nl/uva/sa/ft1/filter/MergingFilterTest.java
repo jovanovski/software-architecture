@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import nl.uva.sa.ft1.pipe.OperationFailedException;
 import nl.uva.sa.ft1.pipe.Pipe;
+import nl.uva.sa.ft1.pipe.PipeClosedException;
 import nl.uva.sa.ft1.pipe.SynchronizedArrayListPipe;
 
 import java.util.ArrayList;
@@ -19,17 +20,20 @@ public class MergingFilterTest {
 		inPipes.add(inPipe1);
 		inPipes.add(inPipe2);
 		
-		inPipe1.put("foo");
-		inPipe1.close();
-		inPipe2.put("bar");
-		inPipe2.close();
-		MergingFilter<String> filter = new MergingFilter<>(inPipes, outPipe);
-		filter.run();
 		try {
+			inPipe1.put("foo");
+			inPipe1.close();
+			inPipe2.put("bar");
+			inPipe2.close();
+			MergingFilter<String> filter = new MergingFilter<>(inPipes, outPipe);
+			filter.run();
 			assertEquals("foo", outPipe.get());
 			assertEquals("bar", outPipe.get());
 			assertTrue(outPipe.isEmpty());
 			assertTrue(outPipe.isClosed());
+		} catch (PipeClosedException e) {
+			e.printStackTrace();
+			fail("Pipe closed prematurely");
 		} catch (OperationFailedException e) {
 			e.printStackTrace();
 			fail("Operation failed");

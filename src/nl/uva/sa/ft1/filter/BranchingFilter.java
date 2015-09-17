@@ -17,15 +17,17 @@ public class BranchingFilter<E> implements Filter {
 	
 	public void run() {
 		try {
-			while (true) {
-				E obj = this.pipeIn.get();
-				for (Pipe<E> pipeOut : this.pipesOut) {
-					pipeOut.put(obj);
+			try {
+				while (true) {
+					E obj = this.pipeIn.get();
+					for (Pipe<E> pipeOut : this.pipesOut) {
+						pipeOut.put(obj);
+					}
 				}
-			}
-		} catch (PipeClosedException e) {
-			for (Pipe<E> pipeOut : this.pipesOut) {
-				pipeOut.close();
+			} catch (PipeClosedException e) {
+				for (Pipe<E> pipeOut : this.pipesOut) {
+					pipeOut.close();
+				}
 			}
 		} catch (OperationFailedException e) {
 			e.printStackTrace();

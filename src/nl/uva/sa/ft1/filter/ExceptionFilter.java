@@ -2,6 +2,7 @@ package nl.uva.sa.ft1.filter;
 
 import nl.uva.sa.ft1.pipe.OperationFailedException;
 import nl.uva.sa.ft1.pipe.Pipe;
+import nl.uva.sa.ft1.pipe.PipeClosedException;
 
 public class ExceptionFilter extends FilterBase<String, String> {
 	private Pipe<String> pipe = null;
@@ -12,23 +13,17 @@ public class ExceptionFilter extends FilterBase<String, String> {
 	
 	public void run() {
 		String line = null;
-		while(true) {
-			try {
-				Object o = pipe.get();
-				if(o==null){
-					line = null;
-				}
-				else{
-					line = (String) o;
-				}
-			} catch (OperationFailedException iex) { }
+		try {
+			while(true) {
+				String s = pipe.get();
 
-			if (line==null){
-				break;
-			}
-			else if (line.startsWith("log:exception")){
-				System.out.println(line + " - end");
-			}
-		}
+				if (s.startsWith("log:exception")) {
+					System.out.println(line + " - end");	
+				}
+			} 
+		} catch (PipeClosedException e) {			
+		} catch (OperationFailedException e) {
+			e.printStackTrace();
+		}		
 	}
 }
