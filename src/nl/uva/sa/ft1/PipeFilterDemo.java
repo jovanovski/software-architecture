@@ -14,10 +14,10 @@ public class PipeFilterDemo {
     	logInPipes.add(pipe1);
 
     	List<Pipe<String>> logOutPipes = new ArrayList<Pipe<String>>();
-    	logInPipes.add(pipe2);
+    	logOutPipes.add(pipe2);
 
     	List<Pipe<String>> extInPipes = new ArrayList<Pipe<String>>();
-    	logInPipes.add(pipe2);
+    	extInPipes.add(pipe2);
     	
     	//Create generator and pass pipe 1 to it
     	Thread logGenerator = new RandomLogGenerator(pipe1);
@@ -28,7 +28,7 @@ public class PipeFilterDemo {
     	logingFilter.setPipesOut(logOutPipes);
     	
     	//Create exception filter and set input pipes
-    	Filter<String, String> exceptionFilter = new ExceptionFilter();
+    	Filter<String, Integer> exceptionFilter = new ExceptionCountFilter();
     	exceptionFilter.setPipesIn(extInPipes);
 
     	//Create threads of the filters, and run them
@@ -37,6 +37,6 @@ public class PipeFilterDemo {
     	
     	logGenerator.start();
     	logFilter.start();
-    	//expFilter.start();
+    	expFilter.start();
      }
 }
