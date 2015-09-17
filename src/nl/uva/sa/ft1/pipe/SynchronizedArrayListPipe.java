@@ -15,9 +15,10 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
     public synchronized E get(boolean blocking) throws OperationFailedException, PipeClosedException {
     	try {
     		if (buffer.isEmpty()) {
-    			if (closed) {
+    			if (this.isClosed()) {
         			throw new PipeClosedException();
-        		}    			
+        		}    		
+    			
     			if (blocking) {
     				while(buffer.isEmpty()) wait();	
     			} else {
@@ -38,6 +39,6 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
     }
     
     public boolean isClosed() {
-    	return this.closed;
+    	return buffer.isEmpty() && this.closed;
     }
 }
