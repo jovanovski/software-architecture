@@ -4,8 +4,8 @@ package nl.uva.sa.ft1.pipe;
 public abstract class AbstractPipe<E> implements Pipe<E>{
 	
 	//Maps the normal put method to a blocking put method
-	public void put(E obj) throws OperationFailedException, PipeClosedException {
-		this.put(obj, true);
+	public boolean put(E obj) throws OperationFailedException, PipeClosedException {
+		return this.put(obj, true);
 	}
 	
 	//Maps the normal get method to a blocking get method

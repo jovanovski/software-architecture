@@ -10,7 +10,7 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
     //Flag for closed pipe
     private boolean closed = false;
     
-    public synchronized void put(E obj, boolean blocking) throws OperationFailedException, PipeClosedException {
+    public synchronized boolean put(E obj, boolean blocking) throws OperationFailedException, PipeClosedException {
     	//Throw an exception if someone tries to put an element to a closed pipe
     	if (this.isClosed()) {
     		throw new PipeClosedException();
@@ -20,6 +20,8 @@ public class SynchronizedArrayListPipe<E> extends AbstractPipe<E> {
         
         //Notify any waiting process that an element has been added
         notify();
+        
+        return true;
     }
     
     public synchronized E get(boolean blocking) throws OperationFailedException, PipeClosedException {
