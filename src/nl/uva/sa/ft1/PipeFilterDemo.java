@@ -6,7 +6,6 @@ import java.util.List;
 import nl.uva.sa.ft1.filter.BranchingFilter;
 import nl.uva.sa.ft1.filter.ExceptionCountFilter;
 import nl.uva.sa.ft1.filter.ExceptionFilter;
-import nl.uva.sa.ft1.filter.Filter;
 import nl.uva.sa.ft1.filter.LogingFilter;
 import nl.uva.sa.ft1.filter.VeboseCountFilter;
 import nl.uva.sa.ft1.pipe.Pipe;
